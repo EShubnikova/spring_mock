@@ -22,15 +22,13 @@ public class Controller {
     }
 
     @PostMapping("/login-date")
-    public LoginDate loginDate() {
-        Login login = new Login("request","request");
+    public LoginDate loginDate(@RequestBody Login login) {
         try {
             Random random = new Random();
             Thread.sleep((long) ((random.nextDouble() + 1) * 1000));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        return new LoginDate(login.getLogin(), login.getPassword(), LocalDate.now());
+        return new LoginDate(login.getUsername(), login.getPassword(), LocalDate.now());
     }
 }
