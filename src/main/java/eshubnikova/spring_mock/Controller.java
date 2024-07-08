@@ -30,7 +30,7 @@ public class Controller {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        
+
         return new LoginDate(login.getLogin(), login.getPassword(), LocalDate.now());
     }
 }
