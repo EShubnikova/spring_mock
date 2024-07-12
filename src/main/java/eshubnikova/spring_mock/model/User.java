@@ -19,7 +19,7 @@ public class User {
         this(username, password);
         this.date = date;
     }
-
+    
     public String getUsername() {
         return username;
     }
@@ -29,7 +29,6 @@ public class User {
     public LocalDate getDate() {
         return date;
     }
-
     public boolean usernameExists() {
         return username != null;
     }
