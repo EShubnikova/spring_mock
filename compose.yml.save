@@ -1,0 +1,64 @@
+version: '3.9'
+
+services:
+
+  postgres:
+    image: postgres:16.3-alpine3.19
+    command:
+      - "postgres"
+      - "-c"
+      - "shared_preload_libraries=pg_stat_statements"
+      - "-c"
+      - "pg_stat_statements.track=all"
+    restart: always
+    # set shared memory limit when using docker-compose
+    shm_size: 128mb
+    # or set shared memory limit when deploy via swarm stack
+    #volumes:
+    #  - type: tmpfs
+    #    target: /dev/shm
+    #    tmpfs:
+    #      size: 134217728 # 128*2^20 bytes = 128Mb
+    networks: [postgres]
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "springdb"
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "admin"
+      PG_DATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - springdb-data:/var/lib/postgresql/data
+
+  postgres-exporter:
+    image: bitnami/postgres-exporter
+    networks: [postgres]
+    ports:
+      - "9187:9187"
+    restart: unless-stopped
+    depends_on: [postgres, prometheus]
+    environment:
+      DATA_SOURCE_URI: "postgres:5432/springdb?sslmode=disable"
+      DATA_SOURCE_USER: "amdin"
+      DATA_SOURCE_PASS: "admin"
+    volumes:
+      - ./postgres_exporter.yml:/etc/postgres_exporter/postgres_exporter.yml
+
+  prometheus:
+    image: bitnami/prometheus
+    restart: always
+    networks: [postgres]
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+    command: --config.file=/etc/prometheus/prometheus.yml
+
+volumes:
+  springdb-data:
+  prometheus-data:
+
+networks:
+  postgres:
+    driver: bridge

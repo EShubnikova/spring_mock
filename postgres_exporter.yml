@@ -1,0 +1,8 @@
+auth_modules:
+  postgres:
+    type: userpass
+    userpass:
+      username: admin
+      password: admin
+    options:
+      sslmode: disable
