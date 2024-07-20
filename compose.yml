@@ -28,6 +28,7 @@ services:
       PG_DATA: "/var/lib/postgresql/data/pgdata"
     volumes:
       - springdb-data:/var/lib/postgresql/data
+      - ./postgres:/home
 
   postgres-exporter:
     image: bitnami/postgres-exporter
