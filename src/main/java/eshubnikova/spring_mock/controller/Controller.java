@@ -1,7 +1,7 @@
 package eshubnikova.spring_mock.controller;
 
 import eshubnikova.spring_mock.model.User;
-import jakarta.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -27,7 +27,10 @@ public class Controller {
     }
 
     @PostMapping("/user-date")
-    public ResponseEntity<?> handlePostRequest(@Valid @RequestBody User user) {
+    public ResponseEntity<?> handlePostRequest(@RequestBody User user) {
+        if (!user.usernameExists() || !user.passwordExists() || user.dateExists()) {
+            throw new HttpMessageNotReadableException("wrong JSON format");
+        }
         try {
             Random random = new Random();
             Thread.sleep((long) ((random.nextDouble() + 1) * 1000));
