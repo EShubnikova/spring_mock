@@ -18,6 +18,7 @@ pipeline {
 
         stage("test") {
             steps {
+            	sh 'sleep 10' 
                 sh 'curl http://localhost:8080/user'
             }
         }
