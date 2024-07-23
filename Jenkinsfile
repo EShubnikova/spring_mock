@@ -6,15 +6,20 @@ pipeline {
 
         stage("create and start containers") {
             steps {
-            	sh 'pwd && ls'
-            	sh 'docker build -t spring_mock .' 
+            	sh 'docker build --no-cache -t spring_mock .' 
+            }
+        }
+
+        stage("deploy") {
+            steps {
                 sh 'docker run -d -p 8080:8080 -p 8778:8778 --name spring_mock spring_mock'
             }
         }
 
         stage("test") {
             steps {
-                echo 'containers started'
+            	sh 'sleep 10' 
+                sh 'curl http://localhost:8080/user'
             }
         }
 
@@ -22,7 +27,7 @@ pipeline {
 	post {
 	// Clean after build
 	always {
-	    cleanWs(cleanWhenNotBuilt: false,
+	    cleanWs(cleanWhenNotBuilt: true,
 		    deleteDirs: true,
 		    disableDeferredWipeout: true,
 		    notFailBuild: true,
