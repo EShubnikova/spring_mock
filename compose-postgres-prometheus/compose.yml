@@ -1,6 +1,6 @@
 services:
 
-#    curl:
+#  curl:
 #    image: curlimages/curl
 #    container_name: curl
 #    restart: always

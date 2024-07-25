@@ -47,7 +47,7 @@ services:
       - kafka1
     ports:
       - 9308:9308
-    command: --kafka.server=192.168.1.107:9094
+    command: --kafka.server=kafka:9092
     networks:
       - kafka
 
