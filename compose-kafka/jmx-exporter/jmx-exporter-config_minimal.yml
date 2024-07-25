@@ -1,0 +1,6 @@
+startDelaySeconds: 10
+hostPort: 172.17.0.1:9999
+ssl: false
+rules:
+- pattern: ".*"
+
